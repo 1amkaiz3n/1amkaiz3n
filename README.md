@@ -95,6 +95,23 @@
 <a href="https://tryhackme.com/r/badges">
   <img src="https://assets.tryhackme.com/img/badges/wireshark.svg" alt="TryHackMe Badge" width="50">
 </a>
+
+<a href="https://tryhackme.com/r/badges">
+  <img src="https://assets.tryhackme.com/img/badges/introtosecurityengineering.png" alt="TryHackMe Badge" width="50">
+</a>
+
+<a href="https://tryhackme.com/r/badges">
+  <img src="https://assets.tryhackme.com/img/badges/webbed.png" alt="TryHackMe Badge" width="50">
+</a>
+
+
+<a href="https://tryhackme.com/r/badges">
+  <img src="https://assets.tryhackme.com/img/badges/howthewebworks.png" alt="TryHackMe Badge" width="50">
+</a>
+
+<a href="https://tryhackme.com/r/badges">
+  <img src="https://assets.tryhackme.com/img/badges/mrrobot.png" alt="TryHackMe Badge" width="50">
+</a>
 </div>
 
 
