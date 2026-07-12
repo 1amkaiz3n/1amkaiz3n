@@ -7,47 +7,49 @@
   <img src="https://media.giphy.com/media/lP8xu5t2DLGG045H8F/giphy.gif" width="100"/>
 </div>
 
-<div id="badges" align="center">
-  <a href="https://railway.app?referralCode=v-jhtw">
-    <img src="https://img.shields.io/badge/Railway-blue?style=for-the-badge&logo=railway&logoColor=white" alt="Railway Badge"/>
-  </a>
-  <a href="https://replit.com/@1amkaizen">
-    <img src="https://img.shields.io/badge/Replit-red?style=for-the-badge&logo=replit&logoColor=white" alt="Youtube Badge"/>
-  </a>
-  <a href="https://twitter.com/1amkaizen">
-    <img src="https://img.shields.io/badge/Twitter-blue?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter Badge"/>
-  </a>
- 
-</div>
 <div align="center">
- <img  src="https://komarev.com/ghpvc/?username=1amkaizen&style=flat-square&color=blue" alt=""/>
-</div>
-<div align="center">
-<p><img src="https://www.codewars.com/users/1amkaizen/badges/large" alt="Codewars Stats Card"></p>
+  <!-- ================= HEADER BADGES ================= -->
+  <a href="https://tryhackme.com/p/1amkaiz3n" target="_blank">
+    <img src="https://img.shields.io/badge/TryHackMe-212C42?style=for-the-badge&logo=tryhackme&logoColor=red" alt="TryHackMe" />
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://profile.hackthebox.com/profile/019dbf06-3de8-7318-8064-ed2706181856" target="_blank">
+    <img src="https://img.shields.io/badge/Hack_The_Box-9FEF00?style=for-the-badge&logo=hackthebox&logoColor=black" alt="Hack The Box" />
+  </a>
+
+  <br/>
+
+<!-- ================= STATS DASHBOARD GRID ================= -->
+<table border="0" cellpadding="10" cellspacing="0" align="center">
+  <tr>
+    <!-- Kolom Kiri: TryHackMe Badge -->
+    <td align="center" valign="middle">
+      <a href="https://tryhackme.com/p/1amkaiz3n" target="_blank">
+        <img src="https://tryhackme-badges.s3.amazonaws.com/1amkaiz3n.png" alt="TryHackMe Stats" width="240" />
+      </a>
+    </td>
+    <!-- Kolom Kanan: Codewars Badge -->
+    <td align="center" valign="middle">
+      <a href="https://www.codewars.com/users/1amkaizen" target="_blank">
+        <img src="https://www.codewars.com/users/1amkaizen/badges/large" alt="Codewars Stats" width="400" />
+      </a>
+    </td>
+  </tr>
+</table>
 </div>
 
-<p align="center"> 
-  <!--!<a href="https://www.buymeacoffee.com/1amkaiz3n"> <img align="center" src="https://cdn.buymeacoffee.com/buttons/v2/default-orange.png" height="50" width="210" alt="1amkaizen" /></a>-->
-  <a href="https://trakteer.id/1amkaizen" target="_blank"><img id="wse-buttons-preview" src="https://cdn.trakteer.id/images/embed/trbtn-red-1.png?date=18-11-2023" height="40" style="border:0px;height:40px;" alt="Trakteer Saya"></a>
-  <a href="https://www.producthunt.com/posts/building-a-bot-platform-with-django?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-building&#0045;a&#0045;bot&#0045;platform&#0045;with&#0045;django" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=494430&theme=dark" alt="Building&#0032;a&#0032;Bot&#0032;Platform&#0032;With&#0032;Django - A&#0032;step&#0045;by&#0045;step&#0032;guide&#0032;to&#0032;build&#0032;bot&#0032;platform&#0032;with&#0032;Django | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+### 🛠️ Languages & Tools
+
+<p align="center">
+  <img src="https://github.com/devicons/devicon/blob/master/icons/python/python-original-wordmark.svg" width="40" height="40"/>
+  <img src="https://github.com/devicons/devicon/blob/master/icons/mysql/mysql-original-wordmark.svg" width="40" height="40"/>
+  <img src="https://github.com/devicons/devicon/blob/master/icons/bash/bash-plain.svg" width="40" height="40"/>
+  <img src="https://github.com/devicons/devicon/blob/master/icons/linux/linux-original.svg" width="40" height="40"/>
+  <img src="https://github.com/devicons/devicon/blob/master/icons/apache/apache-original.svg" width="40" height="40"/>
+  <img src="https://github.com/devicons/devicon/blob/master/icons/fastapi/fastapi-original.svg" width="40" height="40"/>
+  <img src="https://github.com/devicons/devicon/blob/master/icons/cloudflare/cloudflare-original.svg" width="40" height="40"/>
+  <img src="https://github.com/devicons/devicon/blob/master/icons/docker/docker-original.svg" width="40" height="40"/>
 </p>
-
----
-
-### :hammer_and_wrench: Languages and Tools :
-
-<div>
-  <img src="https://github.com/devicons/devicon/blob/master/icons/go/go-original-wordmark.svg" title="Golang" alt="Go" width="40" height="40"/>&nbsp;
-    <img src="https://github.com/devicons/devicon/blob/master/icons/python/python-original-wordmark.svg" title="Python" **alt="Python" width="40" height="40"/> 
-  <img src="https://github.com/devicons/devicon/blob/master/icons/react/react-original-wordmark.svg" title="React" alt="React" width="40" height="40"/>&nbsp;
-  <img src="https://github.com/devicons/devicon/blob/master/icons/bootstrap/bootstrap-original.svg" title="Bootstrap" alt="Bootstrap" width="40" height="40"/>&nbsp;
-  <img src="https://github.com/devicons/devicon/blob/master/icons/html5/html5-original.svg" title="HTML5" alt="HTML" width="40" height="40"/>&nbsp;
-  <img src="https://github.com/devicons/devicon/blob/master/icons/javascript/javascript-original.svg" title="JavaScript" alt="JavaScript" width="40" height="40"/>&nbsp;
-  <img src="https://github.com/devicons/devicon/blob/master/icons/css3/css3-original-wordmark.svg" title="CSS3" alt="CSS3" width="40" height="40"/>&nbsp;
-  <img src="https://github.com/devicons/devicon/blob/master/icons/mysql/mysql-original-wordmark.svg" title="MySQL"  alt="MySQL" width="40" height="40"/>&nbsp;
-  <img src="https://github.com/devicons/devicon/blob/master/icons/bash/bash-plain.svg" title="Linux" alt="linux" width="40" height="40"/>&nbsp;
-  <img src="https://github.com/devicons/devicon/blob/master/icons/linux/linux-original.svg" title="Github" alt="github" width="40" height="40"/>&nbsp;
-</div>
 
 ---
 
@@ -95,35 +97,31 @@
 </a>
 </div>
 
-### 🏆 GitHub Trophy :
-
-<div align="center">
-  <img src="https://github-profile-trophy.vercel.app/?username=1amkaizen&theme=radical" />
-</div>
 
 ### :fire: My Stats :
 
 
 <div align="center" style="text-align:center">
+  <a href="https://github.com/1amkaiz3n">
+    <img width="49%"
+         src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=1amkaiz3n&theme=default"
+         alt="1amkaiz3n's GitHub Profile Summary">
+</a>
     <a href="#">
-        <img width="49%" src="https://github-readme-stats.vercel.app/api?username=1amkaizen&show_icons=true&theme=transparent&count_private=true"
-            alt="1amkaizen's Github stats">
-    </a>
-    <a href="#">
-        <img width="49%" src="https://github-readme-streak-stats.herokuapp.com/?user=1amkaizen&theme=transparent"
-            alt="1amkaizen's Github commit streak">
+        <img width="49%" src="https://github-readme-streak-stats.herokuapp.com/?user=1amkaiz3n&theme=transparent"
+            alt="1amkaiz3n's Github commit streak">
     </a>  
 </div>
 
 
 <div align="center" style="text-align:center">
     <a href="#">
-        <img width="49%" src="http://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=1amkaizen&theme=radical"
-            alt="1amkaizen's Github stats">
+        <img width="49%" src="http://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=1amkaiz3n&theme=radical"
+            alt="1amkaiz3n's Github stats">
     </a>
     <a href="#">
-        <img width="49%" src="http://github-profile-summary-cards.vercel.app/api/cards/stats?username=1amkaizen&theme=radical " 
-            alt="1amkaizen's Github commit streak">
+        <img width="49%" src="http://github-profile-summary-cards.vercel.app/api/cards/stats?username=1amkaiz3n&theme=radical " 
+            alt="1amkaiz3n's Github commit streak">
     </a>
     
 </div>
