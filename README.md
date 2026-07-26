@@ -101,34 +101,18 @@
 </a>
 </div>
 
+### 🔥 My Stats
 
-### :fire: My Stats :
+<p align="center">
 
+![](https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=1amkaiz3n&theme=holi&animation=sequence&duration=5&name=1amkaiz3n)
 
-<div align="center" style="text-align:center">
-  <a href="https://github.com/1amkaiz3n">
-    <img width="49%"
-         src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=1amkaiz3n&theme=default"
-         alt="1amkaiz3n's GitHub Profile Summary">
-</a>
-    <a href="#">
-        <img width="49%" src="https://github-readme-streak-stats.herokuapp.com/?user=1amkaiz3n&theme=transparent"
-            alt="1amkaiz3n's Github commit streak">
-    </a>  
-</div>
+</p>
 
+| | |
+|:---:|:---:|
+| ![](https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=1amkaiz3n&theme=radical&animation=sequence&duration=5&utcOffset=7) | ![](https://github-profile-summary-cards.vercel.app/api/cards/stats?username=1amkaiz3n&theme=holi&animation=sequence&duration=5) |
 
-<div align="center" style="text-align:center">
-    <a href="#">
-        <img width="49%" src="http://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=1amkaiz3n&theme=radical"
-            alt="1amkaiz3n's Github stats">
-    </a>
-    <a href="#">
-        <img width="49%" src="http://github-profile-summary-cards.vercel.app/api/cards/stats?username=1amkaiz3n&theme=radical " 
-            alt="1amkaiz3n's Github commit streak">
-    </a>
-    
-</div>
-
-
-<p align="center"><img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.svg?sanitize=true" /></p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.svg?sanitize=true" />
+</p>
