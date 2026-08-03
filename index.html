@@ -1,620 +1,791 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1amkaizen · hacker portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+  <style>
+    body {
+      background: #0b0e0a;
+      color: #b7ffb7;
+      font-family: 'Courier New', Courier, monospace;
+      overflow-x: hidden;
+    }
+    .glow-text {
+      text-shadow: 0 0 6px #1aff1a, 0 0 12px #00aa00;
+    }
+    .terminal-box {
+      background: #0f130e;
+      border: 1px solid #2d5e2d;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.15);
+      border-radius: 12px;
+      padding: 1.2rem 1.8rem;
+      max-width: 720px;
+      margin: 0 auto;
+      backdrop-filter: blur(2px);
+    }
+    .terminal-cursor {
+      display: inline-block;
+      width: 10px;
+      height: 1.2em;
+      background: #3eff3e;
+      margin-left: 4px;
+      vertical-align: text-bottom;
+      animation: blink 0.9s step-end infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .nav-glow {
+      border-bottom: 1px solid #1d3b1d;
+      background: #0b0f0bcc;
+      backdrop-filter: blur(8px);
+    }
+    .badge-glow img {
+      filter: drop-shadow(0 0 6px #00cc00);
+    }
+    .three-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.15;
+    }
+    .content {
+      position: relative;
+      z-index: 10;
+    }
+    a {
+      color: #b3ffb3;
+      text-decoration: none;
+    }
+    .footer-svg {
+      filter: invert(0.9) sepia(0.2) hue-rotate(90deg);
+      opacity: 0.5;
+    }
+    .interactive-hint {
+      background: #1a2a1a;
+      border: 1px solid #3a7a3a;
+      border-radius: 40px;
+      padding: 6px 18px;
+      font-size: 0.8rem;
+      color: #88dd88;
+    }
+    .hacker-card {
+      background: #101710;
+      border: 1px solid #2b5a2b;
+      border-radius: 16px;
+      box-shadow: 0 0 12px rgba(0, 255, 0, 0.05);
+      transition: none !important;
+      transform-style: preserve-3d;
+      perspective: 800px;
+      will-change: transform;
+    }
+    #character-container {
+      width: 100%;
+      height: 500px;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid #2b5a2b;
+      box-shadow: 0 0 30px rgba(0, 255, 0, 0.08);
+      cursor: grab;
+      background: #0b0e0a;
+      position: relative;
+    }
+    #character-container:active {
+      cursor: grabbing;
+    }
+    .char-label {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0f130ecc;
+      backdrop-filter: blur(4px);
+      padding: 4px 16px;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      color: #88dd88;
+      border: 1px solid #2d5e2d;
+      pointer-events: none;
+      z-index: 5;
+    }
+  </style>
+</head>
+<body>
 
-    <title>Portfolio | 1amkaizen</title>
+  <div id="three-canvas" class="three-container"></div>
 
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    >
+  <div class="content relative z-10 px-4 max-w-6xl mx-auto">
 
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-      rel="stylesheet"
-    >
-
-    <script
-      src="https://kit.fontawesome.com/a9b2082fbc.js"
-      crossorigin="anonymous"
-    ></script>
-
-    <link rel="stylesheet" href="style.css">
-  </head>
-
-  <body>
-
-    <!-- Navbar -->
-    <nav class="navbar sticky-top navbar-expand-lg navbar-dark">
-      <div class="container-fluid">
-
-        <a class="navbar-brand" href="#">
-          1amkaizen
-        </a>
-
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#about">
-                About
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="#projects">
-                Projects
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="#tools">
-                Tools
-              </a>
-            </li>
-
-          </ul>
-        </div>
-
+    <nav class="nav-glow sticky top-0 z-30 flex flex-wrap items-center justify-between py-3 px-4 rounded-b-2xl mb-6">
+      <div class="text-2xl font-bold tracking-widest glow-text">
+        <i class="fas fa-terminal mr-2 text-emerald-400"></i>1amkaizen
+      </div>
+      <div class="flex gap-6 text-lg font-mono">
+        <a href="#about" class="hover:text-emerald-300 border-b-2 border-transparent hover:border-emerald-500 transition"><i class="fas fa-user mr-1"></i>About</a>
+        <a href="#projects" class="hover:text-emerald-300 border-b-2 border-transparent hover:border-emerald-500 transition"><i class="fas fa-code mr-1"></i>Projects</a>
+        <a href="#tools" class="hover:text-emerald-300 border-b-2 border-transparent hover:border-emerald-500 transition"><i class="fas fa-tools mr-1"></i>Tools</a>
+        <a href="#badges" class="hover:text-emerald-300 border-b-2 border-transparent hover:border-emerald-500 transition"><i class="fas fa-shield-alt mr-1"></i>Badges</a>
       </div>
     </nav>
 
-
-    <div class="container text-center">
-
-      <!-- About -->
-      <section id="about">
-
-        <img
-          src="https://avatars.githubusercontent.com/u/99733941?s=96&v=4"
-          alt="Profile Picture"
-          class="profile-pic"
-        >
-
-        <div align="center" class="mt-3">
-          <p>
-            <img
-              src="https://www.codewars.com/users/1amkaizen/badges/large"
-              alt="Codewars Stats Card"
-            >
-          </p>
+    <section id="about" class="text-center mt-6">
+      <div class="flex justify-center">
+        <img src="https://avatars.githubusercontent.com/u/99733941?s=120&v=4" alt="profile" class="rounded-full border-4 border-emerald-500/70 w-28 h-28 object-cover shadow-[0_0_30px_#1aff1a]">
+      </div>
+      <h2 class="text-3xl font-bold mt-4 glow-text tracking-wider"><i class="fas fa-address-card mr-2 text-emerald-400"></i>ABOUT</h2>
+      <div class="terminal-box mt-4 text-left">
+        <div class="flex items-center gap-2 text-emerald-400 text-sm mb-1">
+          <i class="fas fa-circle text-red-500"></i>
+          <i class="fas fa-circle text-yellow-400"></i>
+          <i class="fas fa-circle text-green-500"></i>
+          <span class="ml-2 text-gray-400"><i class="fas fa-folder-open mr-1"></i>~/portfolio</span>
         </div>
-
-        <h2>About Me</h2>
-
-        <div class="terminal">
-          <div id="terminalText" class="terminal-text"></div>
-          <span class="typing-cursor"></span>
+        <div id="terminalText" class="font-mono text-base leading-relaxed min-h-[4rem]">
+          <span class="text-emerald-300">$</span> 
         </div>
-
-        <!-- Social Links -->
-        <div class="social-icons">
-
-          <ul>
-
-            <li>
-              <a
-                href="https://www.linkedin.com/in/zen10"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-              >
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span class="fa fa-linkedin"></span>
-              </a>
-            </li>
-
-            <li>
-              <a
-                href="https://github.com/1amkaizen"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub"
-              >
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span class="fa fa-github"></span>
-              </a>
-            </li>
-
-            <li>
-              <a
-                href="https://twitter.com/1amkaizen"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Twitter"
-              >
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span class="fa fa-twitter"></span>
-              </a>
-            </li>
-
-          </ul>
-
-        </div>
-
-      </section>
-
-
-      <!-- TryHackMe Badges -->
-      <section id="badges" class="mt-5">
-
-        <h2>🛡️ TryHackMe Badges</h2>
-
-        <div class="d-flex flex-wrap justify-content-center">
-
-          <a href="https://tryhackme.com/r/badges">
-            <img
-              src="https://assets.tryhackme.com/img/badges/owasptop10.svg"
-              alt="TryHackMe OWASP Top 10 Badge"
-              width="40"
-            >
-          </a>
-
-          <a href="https://tryhackme.com/r/badges">
-            <img
-              src="https://assets.tryhackme.com/img/badges/metasploit.svg"
-              alt="TryHackMe Metasploit Badge"
-              width="40"
-            >
-          </a>
-
-          <a href="https://tryhackme.com/r/badges">
-            <img
-              src="https://assets.tryhackme.com/img/badges/hackerofthemonth.svg"
-              alt="TryHackMe Hacker of the Month Badge"
-              width="40"
-            >
-          </a>
-
-          <a href="https://tryhackme.com/r/badges">
-            <img
-              src="https://assets.tryhackme.com/img/badges/streak1500.svg"
-              alt="TryHackMe Streak Badge"
-              width="40"
-            >
-          </a>
-
-          <a href="https://tryhackme.com/r/badges">
-            <img
-              src="https://assets.tryhackme.com/img/badges/investigations_badge.svg"
-              alt="TryHackMe Investigations Badge"
-              width="40"
-            >
-          </a>
-
-          <a href="https://tryhackme.com/r/badges">
-            <img
-              src="https://assets.tryhackme.com/img/badges/hashcracker.svg"
-              alt="TryHackMe Hash Cracker Badge"
-              width="40"
-            >
-          </a>
-
-          <a href="https://tryhackme.com/r/badges">
-            <img
-              src="https://assets.tryhackme.com/img/badges/ohsint.svg"
-              alt="TryHackMe OhSINT Badge"
-              width="40"
-            >
-          </a>
-
-          <a href="https://tryhackme.com/r/badges">
-            <img
-              src="https://assets.tryhackme.com/img/badges/king.svg"
-              alt="TryHackMe King Badge"
-              width="40"
-            >
-          </a>
-
-          <a href="https://tryhackme.com/r/badges">
-            <img
-              src="https://assets.tryhackme.com/img/badges/windcorp_badge.svg"
-              alt="TryHackMe Windcorp Badge"
-              width="40"
-            >
-          </a>
-
-          <a href="https://tryhackme.com/r/badges">
-            <img
-              src="https://assets.tryhackme.com/img/badges/wireshark.svg"
-              alt="TryHackMe Wireshark Badge"
-              width="40"
-            >
-          </a>
-
-        </div>
-
-      </section>
-
-
-      <!-- GitHub Stats -->
-      <section id="stats" class="mt-5">
-
-        <h2>🔥 My Stats</h2>
-
-        <!-- Profile Details -->
-        <div class="github-card github-profile-details mb-4">
-
-          <img
-            src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=1amkaizen&theme=radical&animation=sequence&duration=5&name=1amkaizen"
-            alt="1amkaizen's GitHub Profile Details"
-            class="img-fluid"
-          >
-
-        </div>
-
-
-        <!-- Productive Time + Stats -->
-        <div class="row justify-content-center g-4">
-
-          <!-- Card 1 -->
-          <div class="col-lg-6 col-md-6">
-
-            <div class="github-card h-100">
-
-              <img
-                src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=1amkaizen&theme=radical&animation=sequence&duration=5&utcOffset=7"
-                alt="1amkaizen's GitHub Productive Time"
-                class="img-fluid"
-              >
-
-            </div>
-
-          </div>
-
-
-          <!-- Card 2 -->
-          <div class="col-lg-6 col-md-6">
-
-            <div class="github-card h-100">
-
-              <img
-                src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=1amkaizen&theme=radical&animation=sequence&duration=5"
-                alt="1amkaizen's GitHub Stats"
-                class="img-fluid"
-              >
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- Other GitHub Stats -->
-        <div class="row justify-content-center g-4 mt-2">
-
-          <!-- Top Languages -->
-          <div class="col-lg-6 col-md-6">
-
-            <div class="github-card h-100">
-
-              <img
-                src="https://github-readme-stats.vercel.app/api/top-langs/?username=1amkaizen&layout=compact&theme=radical"
-                alt="1amkaizen's Most Used Languages"
-                class="img-fluid"
-              >
-
-            </div>
-
-          </div>
-
-
-          <!-- GitHub Trophy -->
-          <div class="col-lg-6 col-md-6">
-
-            <div class="github-card h-100">
-
-              <img
-                src="https://github-profile-trophy.vercel.app/?username=1amkaizen&theme=radical&column=4&margin-w=15&margin-h=15"
-                alt="1amkaizen's GitHub Trophy"
-                class="img-fluid"
-              >
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- Projects -->
-      <section id="projects" class="mt-5">
-
-        <h2>Projects</h2>
-
-        <div class="row">
-
-          <div class="col-md-4">
-
-            <a
-              href="https://github.com/1amkaizen/BookFinderBot-webhook"
-              class="card-link"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-
-              <div class="card mb-4">
-
-                <div class="card-body">
-
-                  <h5 class="card-title">
-                    <i class="fas fa-book-open"></i>
-                    BookFinderBot
-                  </h5>
-
-                  <p class="card-text">
-                    BookFinderBot adalah bot pencari Ebook & Buku yang dibangun menggunakan Go, Fiber, dan Telegram Bot API. Bot ini memungkinkan pengguna untuk mencari Ebook dan Buku berdasarkan judul atau topik tertentu, serta memberikan link ulasan produk yang diminta.
-                  </p>
-
-                </div>
-
-              </div>
-
-            </a>
-
-          </div>
-
-
-          <div class="col-md-4">
-
-            <a
-              href="https://github.com/1amkaizen/affiliate-website"
-              class="card-link"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-
-              <div class="card mb-4">
-
-                <div class="card-body">
-
-                  <h5 class="card-title">
-                    <i class="fas fa-globe"></i>
-                    Affiliate Website
-                  </h5>
-
-                  <p class="card-text">
-                    Website Django untuk mempromosikan produk affiliasi.
-                  </p>
-
-                </div>
-
-              </div>
-
-            </a>
-
-          </div>
-
-
-          <div class="col-md-4">
-
-            <a
-              href="https://github.com/1amkaizen/telegoGPT"
-              class="card-link"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-
-              <div class="card mb-4">
-
-                <div class="card-body">
-
-                  <h5 class="card-title">
-                    <i class="fab fa-telegram"></i>
-                    TelegoGPT
-                  </h5>
-
-                  <p class="card-text">
-                    TelegoGPT adalah bot Telegram dan integrasi OpenAI dengan menggunakan bahasa Golang.
-                  </p>
-
-                </div>
-
-              </div>
-
-            </a>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- Tools -->
-      <section id="tools" class="mt-5">
-
-        <h2>Tools</h2>
-
-        <div class="row">
-
-          <div class="col-md-4">
-
-            <a
-              href="https://github.com/1amkaizen/spoofmail"
-              class="card-link"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-
-              <div class="card mb-4">
-
-                <div class="card-body">
-
-                  <h5 class="card-title">
-                    <i class="fas fa-envelope"></i>
-                    Spoofmail
-                  </h5>
-
-                  <p class="card-text">
-                    Spoofmail adalah tools untuk mengirim spoofing email.
-                  </p>
-
-                </div>
-
-              </div>
-
-            </a>
-
-          </div>
-
-
-          <div class="col-md-4">
-
-            <a
-              href="https://github.com/1amkaizen/auto-recon"
-              class="card-link"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-
-              <div class="card mb-4">
-
-                <div class="card-body">
-
-                  <h5 class="card-title">
-                    <i class="fas fa-tools"></i>
-                    Auto Recon
-                  </h5>
-
-                  <p class="card-text">
-                    Tools untuk auto enumeration subdomain, DNS, host alive.
-                  </p>
-
-                </div>
-
-              </div>
-
-            </a>
-
-          </div>
-
-
-          <div class="col-md-4">
-
-            <a
-              href="https://github.com/1amkaizen/product-scrap-gramedia"
-              class="card-link"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-
-              <div class="card mb-4">
-
-                <div class="card-body">
-
-                  <h5 class="card-title">
-                    <i class="fas fa-tools"></i>
-                    Products Scrape Gramedia
-                  </h5>
-
-                  <p class="card-text">
-                    Tools untuk melakukan scraping data produk dari situs web Gramedia Affiliate. Anda dapat menggunakannya untuk mengumpulkan informasi produk seperti judul, harga, deskripsi, dan lain-lain.
-                  </p>
-
-                </div>
-
-              </div>
-
-            </a>
-
-          </div>
-
-        </div>
-
-      </section>
-
-    </div>
-
-
-    <!-- Footer -->
-    <footer class="footer">
-
-      <p>
-        © 2024 1amkaizen. All rights reserved.
-      </p>
-
-      <p align="center">
-        <img
-          class="img-fluid"
-          src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.svg?sanitize=true"
-          alt="Footer decoration"
-        >
-      </p>
-
+        <span class="terminal-cursor"></span>
+      </div>
+      <div class="flex justify-center gap-8 mt-6 text-3xl">
+        <a href="https://www.linkedin.com/in/zen10" target="_blank" class="social-icon"><i class="fab fa-linkedin"></i></a>
+        <a href="https://github.com/1amkaizen" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+        <a href="https://twitter.com/1amkaizen" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+      </div>
+      <div class="mt-4 flex justify-center">
+        <span class="interactive-hint"><i class="fas fa-mouse-pointer mr-2"></i> drag 3D scene</span>
+      </div>
+    </section>
+
+    <section id="badges" class="mt-12 text-center">
+      <h2 class="text-3xl font-bold glow-text tracking-wider"><i class="fas fa-shield-alt mr-2 text-emerald-400"></i>THM BADGES</h2>
+      <div class="flex flex-wrap justify-center gap-3 mt-4 badge-glow">
+        <img src="https://assets.tryhackme.com/img/badges/owasptop10.svg" width="50" alt="owasp" class="badge-img" />
+        <img src="https://assets.tryhackme.com/img/badges/metasploit.svg" width="50" alt="metasploit" class="badge-img" />
+        <img src="https://assets.tryhackme.com/img/badges/hackerofthemonth.svg" width="50" alt="hacker month" class="badge-img" />
+        <img src="https://assets.tryhackme.com/img/badges/streak1500.svg" width="50" alt="streak" class="badge-img" />
+        <img src="https://assets.tryhackme.com/img/badges/investigations_badge.svg" width="50" alt="investigations" class="badge-img" />
+        <img src="https://assets.tryhackme.com/img/badges/hashcracker.svg" width="50" alt="hashcracker" class="badge-img" />
+        <img src="https://assets.tryhackme.com/img/badges/ohsint.svg" width="50" alt="ohsint" class="badge-img" />
+        <img src="https://assets.tryhackme.com/img/badges/king.svg" width="50" alt="king" class="badge-img" />
+        <img src="https://assets.tryhackme.com/img/badges/windcorp_badge.svg" width="50" alt="windcorp" class="badge-img" />
+        <img src="https://assets.tryhackme.com/img/badges/wireshark.svg" width="50" alt="wireshark" class="badge-img" />
+        <img src="https://assets.tryhackme.com/img/badges/introtosecurityengineering.png" width="50" alt="security eng" class="badge-img" />
+        <img src="https://assets.tryhackme.com/img/badges/webbed.png" width="50" alt="webbed" class="badge-img" />
+        <img src="https://assets.tryhackme.com/img/badges/howthewebworks.png" width="50" alt="how web works" class="badge-img" />
+        <img src="https://assets.tryhackme.com/img/badges/mrrobot.png" width="50" alt="mr robot" class="badge-img" />
+      </div>
+    </section>
+
+    <section id="projects" class="mt-14">
+      <h2 class="text-3xl font-bold text-center glow-text tracking-wider"><i class="fas fa-code mr-2 text-emerald-400"></i>PROJECTS</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-6" id="projectGrid">
+        <a href="https://github.com/1amkaizen/BookFinderBot-webhook" target="_blank" class="hacker-card p-5 block card-3d" data-card>
+          <h5 class="text-xl font-semibold"><i class="fas fa-book-open text-emerald-400"></i> BookFinderBot</h5>
+          <p class="text-gray-300 text-sm mt-2 leading-relaxed">Golang + Fiber + Telegram bot. Cari ebook & buku dengan cepat.</p>
+        </a>
+        <a href="https://github.com/1amkaizen/affiliate-website" target="_blank" class="hacker-card p-5 block card-3d" data-card>
+          <h5 class="text-xl font-semibold"><i class="fas fa-globe text-emerald-400"></i> Affiliate Website</h5>
+          <p class="text-gray-300 text-sm mt-2 leading-relaxed">Django based product affiliate promotion platform.</p>
+        </a>
+        <a href="https://github.com/1amkaizen/telegoGPT" target="_blank" class="hacker-card p-5 block card-3d" data-card>
+          <h5 class="text-xl font-semibold"><i class="fab fa-telegram text-emerald-400"></i> TelegoGPT</h5>
+          <p class="text-gray-300 text-sm mt-2 leading-relaxed">Telegram bot + OpenAI integration using Golang.</p>
+        </a>
+      </div>
+    </section>
+
+    <section id="tools" class="mt-14">
+      <h2 class="text-3xl font-bold text-center glow-text tracking-wider"><i class="fas fa-tools mr-2 text-emerald-400"></i>TOOLS</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-6" id="toolGrid">
+        <a href="https://github.com/1amkaizen/spoofmail" target="_blank" class="hacker-card p-5 block card-3d" data-card>
+          <h5 class="text-xl font-semibold"><i class="fas fa-envelope text-emerald-400"></i> Spoofmail</h5>
+          <p class="text-gray-300 text-sm mt-2">Email spoofing utility for ethical testing.</p>
+        </a>
+        <a href="https://github.com/1amkaizen/auto-recon" target="_blank" class="hacker-card p-5 block card-3d" data-card>
+          <h5 class="text-xl font-semibold"><i class="fas fa-satellite-dish text-emerald-400"></i> Auto Recon</h5>
+          <p class="text-gray-300 text-sm mt-2">Subdomain enumeration, DNS, host alive scanner.</p>
+        </a>
+        <a href="https://github.com/1amkaizen/product-scrap-gramedia" target="_blank" class="hacker-card p-5 block card-3d" data-card>
+          <h5 class="text-xl font-semibold"><i class="fas fa-scroll text-emerald-400"></i> Scrape Gramedia</h5>
+          <p class="text-gray-300 text-sm mt-2">Scrape product data from Gramedia affiliate.</p>
+        </a>
+      </div>
+    </section>
+
+    <section id="expertise" class="mt-14 text-center">
+      <h2 class="text-3xl font-bold glow-text tracking-wider"><i class="fas fa-brain mr-2 text-emerald-400"></i>EXPERTISE</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 max-w-3xl mx-auto" id="expertiseGrid">
+        <div class="hacker-card p-4 card-3d" data-card><i class="fas fa-bug text-2xl text-emerald-400"></i><br><span class="text-sm">Bug Bounty</span></div>
+        <div class="hacker-card p-4 card-3d" data-card><i class="fas fa-code text-2xl text-emerald-400"></i><br><span class="text-sm">Go / Rust</span></div>
+        <div class="hacker-card p-4 card-3d" data-card><i class="fas fa-link text-2xl text-emerald-400"></i><br><span class="text-sm">Web3</span></div>
+        <div class="hacker-card p-4 card-3d" data-card><i class="fas fa-eye text-2xl text-emerald-400"></i><br><span class="text-sm">OSINT</span></div>
+        <div class="hacker-card p-4 card-3d" data-card><i class="fas fa-flag text-2xl text-emerald-400"></i><br><span class="text-sm">CTF</span></div>
+        <div class="hacker-card p-4 card-3d" data-card><i class="fas fa-lock text-2xl text-emerald-400"></i><br><span class="text-sm">Pentesting</span></div>
+        <div class="hacker-card p-4 card-3d" data-card><i class="fas fa-cloud text-2xl text-emerald-400"></i><br><span class="text-sm">Cloud Sec</span></div>
+        <div class="hacker-card p-4 card-3d" data-card><i class="fas fa-robot text-2xl text-emerald-400"></i><br><span class="text-sm">AI/ML</span></div>
+      </div>
+    </section>
+
+    <!-- KARAKTER 3D SECTION -->
+    <section id="character-section" class="mt-14">
+      <h2 class="text-3xl font-bold text-center glow-text tracking-wider"><i class="fas fa-laptop-code mr-2 text-emerald-400"></i>HACKER TERMINAL</h2>
+      <div class="mt-4 relative" id="character-container">
+        <div id="character-canvas" style="width:100%;height:100%;"></div>
+        <div class="char-label"><i class="fas fa-mouse-pointer mr-1"></i> drag to rotate · follow mouse</div>
+      </div>
+    </section>
+
+    <footer class="mt-16 pb-6 text-center text-gray-400 border-t border-emerald-900/40 pt-6">
+      <p class="text-sm"><i class="far fa-copyright mr-1"></i>2026 1amkaizen · <span class="text-emerald-400">//</span> hack the planet</p>
+      <div class="flex justify-center mt-2 opacity-40">
+        <img class="w-64 footer-svg" src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.svg?sanitize=true" alt="divider" />
+      </div>
     </footer>
+  </div>
 
-
-    <!-- Bootstrap JS -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpYF7C9G3R8h5vX5K8c9vQ1R7vG9J8Z0B2h9Q4x8r4w5s5X5X5"
-      crossorigin="anonymous"
-    ></script>
-
-
-    <!-- Terminal Typing Animation -->
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-
-        const text =
-          "Hello! I'm a bug hunter and a web developer with a passion for creating cool projects. Welcome to my portfolio.";
-
-        const terminalText =
-          document.getElementById("terminalText");
-
-        let index = 0;
-
-        function typeText() {
-
-          if (index < text.length) {
-
-            terminalText.textContent +=
-              text.charAt(index);
-
-            index++;
-
-            setTimeout(typeText, 100);
-
-          }
-
+  <script>
+    (function() {
+      // TERMINAL TYPING
+      const terminalEl = document.getElementById('terminalText');
+      const fullText = "Hello! I'm a bug hunter & web developer. Passionate about cool projects and secure code. Welcome to my portfolio.";
+      let currentIndex = 0;
+      function typeNextChar() {
+        if (currentIndex < fullText.length) {
+          terminalEl.textContent += fullText.charAt(currentIndex);
+          currentIndex++;
+          const delay = Math.floor(Math.random() * 40) + 30;
+          setTimeout(typeNextChar, delay);
         }
+      }
+      setTimeout(typeNextChar, 600);
 
-        typeText();
-
+      // =============================================
+      // ANIME.JS EFFECTS
+      // =============================================
+      const cards = document.querySelectorAll('.card-3d');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+          anime({
+            targets: card,
+            rotateX: y * -18,
+            rotateY: x * 18,
+            translateZ: 20,
+            duration: 200,
+            easing: 'easeOutQuad'
+          });
+        });
+        card.addEventListener('mouseleave', () => {
+          anime({
+            targets: card,
+            rotateX: 0,
+            rotateY: 0,
+            translateZ: 0,
+            duration: 400,
+            easing: 'easeOutQuad'
+          });
+        });
+        card.addEventListener('mouseenter', () => {
+          anime({
+            targets: card,
+            scale: 1.03,
+            borderColor: '#5eff5e',
+            boxShadow: '0 0 35px rgba(0, 255, 0, 0.3)',
+            duration: 300,
+            easing: 'easeOutQuad'
+          });
+        });
+        card.addEventListener('mouseleave', () => {
+          anime({
+            targets: card,
+            scale: 1,
+            borderColor: '#2b5a2b',
+            boxShadow: '0 0 12px rgba(0, 255, 0, 0.05)',
+            duration: 300,
+            easing: 'easeOutQuad'
+          });
+        });
       });
-    </script>
 
-  </body>
+      document.querySelectorAll('.social-icon').forEach(icon => {
+        icon.addEventListener('mouseenter', () => {
+          anime({ targets: icon, scale: 1.3, duration: 200, easing: 'easeOutQuad' });
+        });
+        icon.addEventListener('mouseleave', () => {
+          anime({ targets: icon, scale: 1, duration: 200, easing: 'easeOutQuad' });
+        });
+      });
+
+      document.querySelectorAll('.badge-img').forEach(img => {
+        img.addEventListener('mouseenter', () => {
+          anime({
+            targets: img,
+            scale: 1.25,
+            filter: 'drop-shadow(0 0 16px #33ff33)',
+            duration: 200,
+            easing: 'easeOutQuad'
+          });
+        });
+        img.addEventListener('mouseleave', () => {
+          anime({
+            targets: img,
+            scale: 1,
+            filter: 'drop-shadow(0 0 6px #00cc00)',
+            duration: 200,
+            easing: 'easeOutQuad'
+          });
+        });
+      });
+
+      // =============================================
+      // THREE.JS BACKGROUND
+      // =============================================
+      const container = document.getElementById('three-canvas');
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x0b0e0a);
+      const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(0, 0, 20);
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+
+      const gridHelper = new THREE.GridHelper(30, 30, 0x44ff44, 0x226622);
+      gridHelper.position.y = -3;
+      scene.add(gridHelper);
+
+      const cubeGroup = new THREE.Group();
+      const cubeMat = new THREE.MeshStandardMaterial({ color: 0x33dd33, wireframe: true, emissive: 0x113311, roughness: 0.3, metalness: 0.1 });
+      for (let i = 0; i < 50; i++) {
+        const size = 0.3 + Math.random() * 0.9;
+        const cube = new THREE.Mesh(new THREE.BoxGeometry(size, size, size), cubeMat);
+        cube.position.x = (Math.random() - 0.5) * 30;
+        cube.position.y = (Math.random() - 0.5) * 20;
+        cube.position.z = (Math.random() - 0.5) * 12 - 4;
+        cube.rotation.x = Math.random() * Math.PI;
+        cube.rotation.y = Math.random() * Math.PI;
+        cube.userData = { rotSpeedX: (Math.random() - 0.5) * 0.025, rotSpeedY: (Math.random() - 0.5) * 0.025, floatSpeed: 0.002 + Math.random() * 0.01, floatAmp: 0.15 + Math.random() * 0.4, baseY: cube.position.y };
+        cubeGroup.add(cube);
+      }
+      scene.add(cubeGroup);
+
+      const ambient = new THREE.AmbientLight(0x224422);
+      scene.add(ambient);
+      const light = new THREE.PointLight(0x88ff88, 0.8, 40);
+      light.position.set(5, 10, 10);
+      scene.add(light);
+      const backLight = new THREE.PointLight(0x228822, 0.3);
+      backLight.position.set(-5, -2, 8);
+      scene.add(backLight);
+
+      const particleGeo = new THREE.BufferGeometry();
+      const particleCount = 700;
+      const posArray = new Float32Array(particleCount * 3);
+      for (let i = 0; i < particleCount * 3; i += 3) {
+        posArray[i] = (Math.random() - 0.5) * 70;
+        posArray[i+1] = (Math.random() - 0.5) * 50;
+        posArray[i+2] = (Math.random() - 0.5) * 25 - 8;
+      }
+      particleGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+      const particleMat = new THREE.PointsMaterial({ color: 0x66ff66, size: 0.09, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending });
+      const particles = new THREE.Points(particleGeo, particleMat);
+      scene.add(particles);
+
+      let isDragging = false;
+      let prevMouse = { x: 0, y: 0 };
+      let rotVel = { x: 0, y: 0 };
+      renderer.domElement.addEventListener('mousedown', (e) => { isDragging = true; prevMouse.x = e.clientX; prevMouse.y = e.clientY; });
+      window.addEventListener('mousemove', (e) => { if (!isDragging) return; const dx = e.clientX - prevMouse.x; const dy = e.clientY - prevMouse.y; rotVel.y += dx * 0.005; rotVel.x += dy * 0.005; prevMouse.x = e.clientX; prevMouse.y = e.clientY; });
+      window.addEventListener('mouseup', () => { isDragging = false; });
+      renderer.domElement.addEventListener('touchstart', (e) => { const t = e.touches[0]; isDragging = true; prevMouse.x = t.clientX; prevMouse.y = t.clientY; });
+      window.addEventListener('touchmove', (e) => { if (!isDragging || !e.touches.length) return; const t = e.touches[0]; const dx = t.clientX - prevMouse.x; const dy = t.clientY - prevMouse.y; rotVel.y += dx * 0.005; rotVel.x += dy * 0.005; prevMouse.x = t.clientX; prevMouse.y = t.clientY; });
+      window.addEventListener('touchend', () => { isDragging = false; });
+
+      let time = 0;
+      function animateBg() {
+        requestAnimationFrame(animateBg);
+        time += 0.005;
+        if (!isDragging) { rotVel.x *= 0.97; rotVel.y *= 0.97; }
+        cubeGroup.rotation.x += rotVel.x;
+        cubeGroup.rotation.y += rotVel.y;
+        cubeGroup.children.forEach((cube, idx) => {
+          cube.rotation.x += cube.userData.rotSpeedX;
+          cube.rotation.y += cube.userData.rotSpeedY;
+          cube.position.y = cube.userData.baseY + Math.sin(time * cube.userData.floatSpeed + idx) * cube.userData.floatAmp;
+        });
+        particles.rotation.y += 0.0003;
+        particles.rotation.x += 0.00015;
+        if (!isDragging) { camera.position.x = Math.sin(time * 0.05) * 1.0; camera.position.y = Math.sin(time * 0.04) * 0.5; }
+        camera.lookAt(0, 0, 0);
+        renderer.render(scene, camera);
+      }
+      animateBg();
+      window.addEventListener('resize', () => { const w = window.innerWidth; const h = window.innerHeight; camera.aspect = w / h; camera.updateProjectionMatrix(); renderer.setSize(w, h); });
+
+      // =============================================
+      // KARAKTER 3D - LAPTOP THINKPAD STYLE
+      // =============================================
+      const charContainer = document.getElementById('character-container');
+      const charCanvas = document.getElementById('character-canvas');
+      const sceneChar = new THREE.Scene();
+      sceneChar.background = new THREE.Color(0x4a4a5a);
+      const cameraChar = new THREE.PerspectiveCamera(45, charContainer.clientWidth / charContainer.clientHeight, 0.1, 1000);
+      cameraChar.position.set(0.5, 1.0, 3.5);
+      cameraChar.lookAt(0, 0.5, 0);
+      const rendererChar = new THREE.WebGLRenderer({ antialias: true });
+      rendererChar.setSize(charContainer.clientWidth, charContainer.clientHeight);
+      rendererChar.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      charCanvas.appendChild(rendererChar.domElement);
+
+      const character = new THREE.Group();
+
+      // LANTAI
+      const floorMat = new THREE.MeshStandardMaterial({ color: 0x5a5a6a, transparent: true, opacity: 0.6 });
+      const floor = new THREE.Mesh(new THREE.PlaneGeometry(4, 4), floorMat);
+      floor.rotation.x = -Math.PI / 2;
+      floor.position.y = -0.05;
+      character.add(floor);
+
+      const gridHelper2 = new THREE.GridHelper(4, 12, 0x88ff88, 0x44aa44);
+      gridHelper2.position.y = -0.02;
+      character.add(gridHelper2);
+
+      // MEJA
+      const tableMat = new THREE.MeshStandardMaterial({ color: 0x8a8a9e, metalness: 0.5, roughness: 0.3 });
+      const tableTop = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.06, 0.9), tableMat);
+      tableTop.position.set(0, 0.2, 0);
+      character.add(tableTop);
+
+      const tableLegMat = new THREE.MeshStandardMaterial({ color: 0x9a9aae, metalness: 0.4, roughness: 0.3 });
+      const legPositions = [[-0.7, -0.4], [0.7, -0.4], [-0.7, 0.4], [0.7, 0.4]];
+      legPositions.forEach(([x, z]) => {
+        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.2, 6), tableLegMat);
+        leg.position.set(x, 0.1, z);
+        character.add(leg);
+      });
+
+      // LAPTOP - THINKPAD STYLE (warna hitam)
+      const laptopMat = new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.7, roughness: 0.3 });
+      const laptopMatLight = new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.5, roughness: 0.4 });
+      
+      // Layar laptop (bingkai)
+      const screen = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.7, 0.04), laptopMat);
+      screen.position.set(0, 0.65, -0.25);
+      screen.rotation.x = -0.4;
+      character.add(screen);
+
+      // ===== TEXT DI LAYAR (pake CanvasTexture di Plane) =====
+      function createScreenTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 512;
+        canvas.height = 384;
+        const ctx = canvas.getContext('2d');
+        
+        // Background hitam
+        ctx.fillStyle = '#0a0a0a';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Border hijau
+        ctx.strokeStyle = '#00ff44';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+        
+        // Text terminal
+        ctx.font = '20px "Courier New", monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        
+        const lines = [
+          { text: '> root@hacker:~$', y: 35, color: '#00ff44' },
+          { text: '> scanning ports...', y: 65, color: '#00ff44' },
+          { text: '> exploit found!', y: 95, color: '#00ff44' },
+          { text: '> access granted.', y: 125, color: '#00ff44' },
+          { text: '> ./hack.sh running', y: 155, color: '#00ff44' },
+          { text: '> target: 192.168.1.1', y: 185, color: '#88ff88' },
+          { text: '> payload injected', y: 215, color: '#00ff44' },
+          { text: '> connection established', y: 245, color: '#88ff88' },
+        ];
+        
+        lines.forEach(line => {
+          ctx.fillStyle = line.color;
+          ctx.shadowColor = '#00ff44';
+          ctx.shadowBlur = 8;
+          ctx.fillText(line.text, 25, line.y);
+        });
+        
+        // Blinking cursor
+        const blink = Math.floor(Date.now() / 500) % 2 === 0;
+        if (blink) {
+          ctx.fillStyle = '#00ff44';
+          ctx.shadowBlur = 0;
+          ctx.fillRect(25 + ctx.measureText('> connection established').width + 5, 245, 10, 18);
+        }
+        
+        const texture = new THREE.CanvasTexture(canvas);
+        texture.needsUpdate = true;
+        return texture;
+      }
+
+      // Buat texture layar
+      const screenTexture = createScreenTexture();
+      const screenMat = new THREE.MeshStandardMaterial({
+        map: screenTexture,
+        emissive: new THREE.Color(0x00ff44),
+        emissiveIntensity: 0.5,
+        transparent: false,
+      });
+      const screenPlane = new THREE.Mesh(new THREE.PlaneGeometry(0.88, 0.58), screenMat);
+      screenPlane.position.set(0, 0.65, -0.22);
+      screenPlane.rotation.x = -0.4;
+      character.add(screenPlane);
+
+      // Simpan reference untuk update cursor
+      let screenCanvas = screenTexture.image;
+      let screenCtx = screenCanvas.getContext('2d');
+      let lastBlinkState = -1;
+
+      // KEYBOARD - ThinkPad style
+      const keyboard = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.04, 0.5), laptopMatLight);
+      keyboard.position.set(0, 0.28, 0.05);
+      character.add(keyboard);
+
+      const keyMat = new THREE.MeshStandardMaterial({ color: 0x444444, metalness: 0.2, roughness: 0.5 });
+      for (let row = 0; row < 3; row++) {
+        for (let col = 0; col < 8; col++) {
+          const key = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.015, 0.04), keyMat);
+          key.position.set(-0.35 + col * 0.1, 0.30, -0.1 + row * 0.1);
+          character.add(key);
+        }
+      }
+
+      // TRACKPOINT MERAH (ciri khas ThinkPad)
+      const trackpointMat = new THREE.MeshStandardMaterial({ 
+        color: 0xcc0000, 
+        roughness: 0.3,
+        emissive: new THREE.Color(0xff0000),
+        emissiveIntensity: 0.15
+      });
+      const trackpoint = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.03, 0.02, 8), trackpointMat);
+      trackpoint.position.set(0, 0.33, 0.01);
+      character.add(trackpoint);
+
+      // LOGO THINKPAD di layar
+      function createThinkPadLogo() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 30;
+        const ctx = canvas.getContext('2d');
+        
+        ctx.fillStyle = 'rgba(0,0,0,0)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.font = 'bold 14px Arial';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'top';
+        ctx.fillStyle = '#888888';
+        ctx.shadowColor = '#00ff44';
+        ctx.shadowBlur = 5;
+        ctx.fillText('ThinkPad', canvas.width - 5, 5);
+        
+        // LED indicator
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = '#00ff44';
+        ctx.beginPath();
+        ctx.arc(canvas.width - 50, 14, 3, 0, Math.PI * 2);
+        ctx.fill();
+        
+        const texture = new THREE.CanvasTexture(canvas);
+        texture.needsUpdate = true;
+        return texture;
+      }
+
+      const logoMat = new THREE.MeshStandardMaterial({
+        map: createThinkPadLogo(),
+        transparent: true,
+        side: THREE.DoubleSide,
+      });
+      const logo = new THREE.Mesh(new THREE.PlaneGeometry(0.15, 0.035), logoMat);
+      logo.position.set(0.35, 0.78, -0.21);
+      logo.rotation.x = -0.4;
+      character.add(logo);
+
+      // CAHAYA LAYAR
+      const screenLight = new THREE.PointLight(0x00ff44, 0.8);
+      screenLight.position.set(0, 0.65, -0.1);
+      character.add(screenLight);
+
+      // PARTIKEL BINARY
+      const binGeo = new THREE.BufferGeometry();
+      const binCount = 100;
+      const binPos = new Float32Array(binCount * 3);
+      const binSpeeds = [];
+      for (let i = 0; i < binCount; i++) {
+        binPos[i*3] = (Math.random() - 0.5) * 3.5;
+        binPos[i*3+1] = Math.random() * 2.5;
+        binPos[i*3+2] = (Math.random() - 0.5) * 2 - 0.3;
+        binSpeeds.push({
+          x: (Math.random() - 0.5) * 0.008,
+          y: 0.003 + Math.random() * 0.008,
+          z: (Math.random() - 0.5) * 0.008,
+        });
+      }
+      binGeo.setAttribute('position', new THREE.BufferAttribute(binPos, 3));
+      const binMat = new THREE.PointsMaterial({
+        color: 0x88ff88,
+        size: 0.03,
+        transparent: true,
+        opacity: 0.7,
+        blending: THREE.AdditiveBlending,
+      });
+      const binParticles = new THREE.Points(binGeo, binMat);
+      character.add(binParticles);
+      binParticles.userData.speeds = binSpeeds;
+
+      sceneChar.add(character);
+
+      // LIGHTS
+      const ambientChar = new THREE.AmbientLight(0x88ff88, 0.6);
+      sceneChar.add(ambientChar);
+      const lightChar1 = new THREE.DirectionalLight(0x88ff88, 1.0);
+      lightChar1.position.set(2, 4, 3);
+      sceneChar.add(lightChar1);
+      const lightChar2 = new THREE.DirectionalLight(0x448844, 0.5);
+      lightChar2.position.set(-2, 2, -2);
+      sceneChar.add(lightChar2);
+
+      // MOUSE INTERACTION
+      let targetRotX = 0, targetRotY = 0;
+      let currentRotX = 0, currentRotY = 0;
+      let isDragChar = false, prevMouseCh = { x: 0, y: 0 };
+      let dragX = 0, dragY = 0;
+
+      charContainer.addEventListener('mousemove', (e) => {
+        const rect = charContainer.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        targetRotX = y * 0.3;
+        targetRotY = x * 0.3;
+      });
+
+      charContainer.addEventListener('mouseleave', () => {
+        targetRotX = 0;
+        targetRotY = 0;
+      });
+
+      rendererChar.domElement.addEventListener('mousedown', (e) => {
+        isDragChar = true;
+        prevMouseCh.x = e.clientX;
+        prevMouseCh.y = e.clientY;
+      });
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragChar) return;
+        const dx = e.clientX - prevMouseCh.x;
+        const dy = e.clientY - prevMouseCh.y;
+        dragY += dx * 0.01;
+        dragX += dy * 0.01;
+        prevMouseCh.x = e.clientX;
+        prevMouseCh.y = e.clientY;
+      });
+      window.addEventListener('mouseup', () => { isDragChar = false; });
+
+      // ANIMASI
+      let timeChar = 0;
+      function animateChar() {
+        requestAnimationFrame(animateChar);
+        timeChar += 0.01;
+        
+        currentRotX += (targetRotX - currentRotX) * 0.08;
+        currentRotY += (targetRotY - currentRotY) * 0.08;
+        character.rotation.x = currentRotX + dragX;
+        character.rotation.y = currentRotY + dragY;
+        
+        // Update cursor blink di layar
+        const blinkState = Math.floor(Date.now() / 500) % 2;
+        if (blinkState !== lastBlinkState) {
+          lastBlinkState = blinkState;
+          // Re-render canvas
+          const canvas = screenTexture.image;
+          const ctx = screenCtx;
+          
+          // Clear dan redraw ulang
+          ctx.fillStyle = '#0a0a0a';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          
+          ctx.strokeStyle = '#00ff44';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+          
+          ctx.font = '20px "Courier New", monospace';
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'top';
+          
+          const lines = [
+            { text: '> root@hacker:~$', y: 35, color: '#00ff44' },
+            { text: '> scanning ports...', y: 65, color: '#00ff44' },
+            { text: '> exploit found!', y: 95, color: '#00ff44' },
+            { text: '> access granted.', y: 125, color: '#00ff44' },
+            { text: '> ./hack.sh running', y: 155, color: '#00ff44' },
+            { text: '> target: 192.168.1.1', y: 185, color: '#88ff88' },
+            { text: '> payload injected', y: 215, color: '#00ff44' },
+            { text: '> connection established', y: 245, color: '#88ff88' },
+          ];
+          
+          lines.forEach(line => {
+            ctx.fillStyle = line.color;
+            ctx.shadowColor = '#00ff44';
+            ctx.shadowBlur = 8;
+            ctx.fillText(line.text, 25, line.y);
+          });
+          
+          // Blinking cursor
+          if (blinkState === 0) {
+            ctx.fillStyle = '#00ff44';
+            ctx.shadowBlur = 0;
+            ctx.fillRect(25 + ctx.measureText('> connection established').width + 5, 245, 10, 18);
+          }
+          
+          screenTexture.needsUpdate = true;
+        }
+        
+        screenLight.intensity = 0.7 + Math.sin(timeChar * 2) * 0.2;
+        
+        const positions = binParticles.geometry.attributes.position.array;
+        const speeds = binParticles.userData.speeds;
+        for (let i = 0; i < binCount; i++) {
+          positions[i*3] += speeds[i].x;
+          positions[i*3+1] += speeds[i].y;
+          positions[i*3+2] += speeds[i].z;
+          if (positions[i*3+1] > 2.5) positions[i*3+1] = 0;
+          if (positions[i*3] > 1.8) positions[i*3] = -1.8;
+          if (positions[i*3] < -1.8) positions[i*3] = 1.8;
+        }
+        binParticles.geometry.attributes.position.needsUpdate = true;
+        
+        rendererChar.render(sceneChar, cameraChar);
+      }
+      animateChar();
+
+      window.addEventListener('resize', () => {
+        const w = charContainer.clientWidth;
+        const h = charContainer.clientHeight;
+        cameraChar.aspect = w / h;
+        cameraChar.updateProjectionMatrix();
+        rendererChar.setSize(w, h);
+      });
+
+    })();
+  </script>
+
+</body>
 </html>
